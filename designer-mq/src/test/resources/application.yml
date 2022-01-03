@@ -1,0 +1,7 @@
+rocketmq:
+  consumer:
+    group: default_group
+    topic: default_topic
+  producer:
+    group: default_group
+  name-server: 127.0.0.1:9876

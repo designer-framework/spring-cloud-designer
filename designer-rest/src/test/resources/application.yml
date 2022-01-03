@@ -1,3 +1,34 @@
 spring:
   application:
-    name: designer-rest
+    name: designer-rest-test
+forest:
+  enabled: true
+  bean-id: sslConfig
+  max-connections: 300
+  max-route-connections: 300
+  timeout: 3000
+  connect-timeout: 3000
+  retry-count: 2
+  ssl-key-stores:
+    - id: keystore1
+      file: test.keystore
+      keystore-pass: 123456
+      cert-pass: 123456
+      ssl-socket-factory-builder: org.designer.rest.ssl.MySSLSocketFactoryBuilder
+  interceptors:
+    - org.designer.rest.interceptor.GlobalInterceptor
+
+server:
+  port: 443
+  http2:
+    enabled: false
+  ssl:
+    key-store: classpath:keystore.p12
+    key-password: 123456
+    key-store-password: 123456
+    key-store-type: PKCS12
+    protocol: TLSv1.2
+    key-alias: designer
+feign:
+  client:
+    default-config:

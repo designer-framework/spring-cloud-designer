@@ -14,6 +14,8 @@
         <module>designer-simple</module>
         <module>designer-lock</module>
         <module>designer-rest</module>
+        <module>designer-mq</module>
+        <module>designer-dubbo-simple</module>
     </modules>
 
     <properties>
@@ -24,12 +26,17 @@
         <spring.data.version>2021.0.4</spring.data.version>
         <redisson.starter.version>3.16.2</redisson.starter.version>
         <!--外部RPC调用-->
-        <forest.version>1.5.13</forest.version>
+        <forest.version>1.5.4</forest.version>
+        <!--rocketmq-->
+        <rocketmq-starter.version>2.2.1</rocketmq-starter.version>
+        <!--dubbo-->
+        <dubbo.version>2.7.8</dubbo.version>
         <!-- 项目配置 -->
         <java.version>1.8</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
     </properties>
 
     <dependencies>
@@ -66,6 +73,29 @@
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
+            <!-- Apache Dubbo  -->
+            <dependency>
+                <groupId>org.apache.dubbo</groupId>
+                <artifactId>dubbo-dependencies-bom</artifactId>
+                <version>${dubbo.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- https://github.com/apache/dubbo-spring-boot-project/tree/2.7.x -->
+            <!-- https://dubbo.apache.org/zh/docs/languages/java/quick-start/ -->
+            <dependency>
+                <groupId>org.apache.dubbo</groupId>
+                <artifactId>dubbo-spring-boot-starter</artifactId>
+                <version>${dubbo.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.dubbo</groupId>
+                <artifactId>dubbo-dependencies-zookeeper</artifactId>
+                <version>${dubbo.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- logging -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-logging</artifactId>
@@ -79,10 +109,10 @@
             </dependency>
             <dependency>
                 <groupId>org.designer</groupId>
-                <artifactId>designer-cloud</artifactId>
+                <artifactId>designer-dependency</artifactId>
                 <version>${designer.version}</version>
                 <type>pom</type>
-                <scope>runtime</scope>
+                <scope>import</scope>
             </dependency>
             <!-- redisson-starter -->
             <dependency>
@@ -95,10 +125,32 @@
                 <artifactId>forest-spring-boot-starter</artifactId>
                 <version>${forest.version}</version>
             </dependency>
+            <!-- https://github.com/apache/rocketmq-spring -->
+            <!-- https://rocketmq.apache.org/docs/quick-start/ -->
+            <dependency>
+                <groupId>org.apache.rocketmq</groupId>
+                <artifactId>rocketmq-spring-boot-starter</artifactId>
+                <version>${rocketmq-starter.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
     <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${maven-source-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
         <resources>
             <resource>
                 <directory>src/main/java</directory>

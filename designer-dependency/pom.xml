@@ -17,12 +17,17 @@
         <dependencies>
             <dependency>
                 <groupId>org.designer</groupId>
-                <artifactId>designer-simple</artifactId>
+                <artifactId>designer-lock</artifactId>
                 <version>${designer.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.designer</groupId>
-                <artifactId>designer-lock</artifactId>
+                <artifactId>designer-mq</artifactId>
+                <version>${designer.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.designer</groupId>
+                <artifactId>designer-rest</artifactId>
                 <version>${designer.version}</version>
             </dependency>
         </dependencies>
