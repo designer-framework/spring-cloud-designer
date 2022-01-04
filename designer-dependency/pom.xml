@@ -30,6 +30,11 @@
                 <artifactId>designer-rest</artifactId>
                 <version>${designer.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.designer</groupId>
+                <artifactId>designer-tools</artifactId>
+                <version>${designer.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

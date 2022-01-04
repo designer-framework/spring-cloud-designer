@@ -16,6 +16,8 @@
         <module>designer-rest</module>
         <module>designer-mq</module>
         <module>designer-dubbo-simple</module>
+        <module>designer-freemarker</module>
+        <module>designer-tools</module>
     </modules>
 
     <properties>
@@ -31,6 +33,8 @@
         <rocketmq-starter.version>2.2.1</rocketmq-starter.version>
         <!--dubbo-->
         <dubbo.version>2.7.8</dubbo.version>
+        <!-- pdf依赖 -->
+        <flying-saucer-pdf.version>9.1.12</flying-saucer-pdf.version>
         <!-- 项目配置 -->
         <java.version>1.8</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
@@ -131,6 +135,12 @@
                 <groupId>org.apache.rocketmq</groupId>
                 <artifactId>rocketmq-spring-boot-starter</artifactId>
                 <version>${rocketmq-starter.version}</version>
+            </dependency>
+            <!-- FlyingSaucer pdf依赖 -->
+            <dependency>
+                <groupId>org.xhtmlrenderer</groupId>
+                <artifactId>flying-saucer-pdf</artifactId>
+                <version>${flying-saucer-pdf.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

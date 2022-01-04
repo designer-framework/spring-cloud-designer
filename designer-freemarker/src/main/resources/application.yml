@@ -1,0 +1,18 @@
+spring:
+  freemarker:
+    allow-request-override: false
+    allow-session-override: false
+    cache: false
+    charset: utf-8
+    check-template-location: true
+    content-type: text/html
+    expose-request-attributes: false
+    expose-session-attributes: false
+    suffix: .ftl
+    template-loader-path:
+      - classpath:/templates/
+    settings:
+      #处理空值
+      classic_compatible: true
+      datetime_format: yyy-MM-dd HH:mm:ss
+      number_format: 0.##
