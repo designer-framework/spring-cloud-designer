@@ -10,7 +10,6 @@ import org.springframework.ui.freemarker.SpringTemplateLoader;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.Map;
 
 /**
  * @description:
@@ -32,7 +31,7 @@ public class FreemarkerUtils {
      * @throws IOException
      * @throws TemplateException
      */
-    public static String parse(String freemarkerPath, Map<String, Object> dataModel) throws IOException, TemplateException {
+    public static String parse(String freemarkerPath, Object dataModel) throws IOException, TemplateException {
         if (cfg == null) {
             synchronized (FreemarkerUtils.class) {
                 cfg = initConfiguration();
