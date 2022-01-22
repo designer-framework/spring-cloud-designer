@@ -17,7 +17,7 @@ public class RockProduct {
     }
 
     public <T> void send(Class<T> clazz, T payload) {
-        rocketMQTemplate.sendAndReceive(TestConstants.TOPIC, MessageBuilder.withPayload(payload), clazz);
+        rocketMQTemplate.syncSend(TestConstants.TOPIC, MessageBuilder.withPayload(payload).build());
     }
 
 }

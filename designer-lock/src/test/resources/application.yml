@@ -15,6 +15,14 @@ spring:
     redis:
       #缓存过期时间
       time-to-live: 60S
+      exp-properties:
+        - cache-names: simples
+          redis:
+            time-to-live: 10S
+            cache-null-values: true
+            key-prefix: 'simples_prefix::'
+            use-key-prefix: true
+
   redis:
     host: 192.168.186.128
     port: 6379

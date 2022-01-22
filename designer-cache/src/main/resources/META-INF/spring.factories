@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  org.designer.cache.configuration.redis.RedissonAutoConfig

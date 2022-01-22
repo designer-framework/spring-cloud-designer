@@ -35,6 +35,16 @@
                 <artifactId>designer-tools</artifactId>
                 <version>${designer.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.designer</groupId>
+                <artifactId>designer-stream</artifactId>
+                <version>${designer.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.designer</groupId>
+                <artifactId>designer-cache</artifactId>
+                <version>${designer.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

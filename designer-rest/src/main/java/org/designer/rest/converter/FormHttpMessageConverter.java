@@ -66,7 +66,7 @@ public class FormHttpMessageConverter implements HttpMessageConverter<Object> {
 
     public void setSupportedMediaTypes(List<MediaType> supportedMediaTypes) {
         Assert.notNull(supportedMediaTypes, "'supportedMediaTypes' must not be null");
-        this.supportedMediaTypes = new ArrayList(supportedMediaTypes);
+        this.supportedMediaTypes = new ArrayList<>(supportedMediaTypes);
     }
 
     @Override
@@ -102,12 +102,11 @@ public class FormHttpMessageConverter implements HttpMessageConverter<Object> {
     }
 
     private void applyDefaultCharset() {
-        Iterator var1 = partConverters.iterator();
-
+        Iterator<HttpMessageConverter<?>> var1 = partConverters.iterator();
         while (var1.hasNext()) {
-            HttpMessageConverter<?> candidate = (HttpMessageConverter) var1.next();
+            HttpMessageConverter<?> candidate = var1.next();
             if (candidate instanceof AbstractHttpMessageConverter) {
-                AbstractHttpMessageConverter<?> converter = (AbstractHttpMessageConverter) candidate;
+                AbstractHttpMessageConverter<?> converter = (AbstractHttpMessageConverter<?>) candidate;
                 if (converter.getDefaultCharset() != null) {
                     converter.setDefaultCharset(charset);
                 }
@@ -134,7 +133,7 @@ public class FormHttpMessageConverter implements HttpMessageConverter<Object> {
         if (contentType != null) {
             return contentType.getType().equalsIgnoreCase("multipart");
         } else {
-            Iterator var3 = map.values().iterator();
+            Iterator<? extends List<?>> var3 = map.values().iterator();
 
             while (var3.hasNext()) {
                 List<?> values = (List) var3.next();

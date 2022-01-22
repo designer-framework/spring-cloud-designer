@@ -1,0 +1,11 @@
+spring:
+  cloud:
+    function:
+      location: maven://org.designer:designer-function-simple:1.0.0-RELEASE
+      function-class: org.designer.function.provider.Provider
+      routing-expression: /function
+      web:
+        path: '/function'
+        export:
+          sink:
+            content-type: 'application/json'

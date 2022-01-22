@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.HashMap;
+
 /**
  * @description:
  * @author: Designer
@@ -26,7 +28,10 @@ public class LockInterceptorTest {
 
     @Test
     public void lockInterceptor() {
-        testLockService.lock(1);
+        HashMap<String, Object> lock0 = testLockService.lock(1);
+        HashMap<String, Object> lock00 = testLockService.lock(1);
+        String lock1 = testLockService.lock1(1);
+        String lock11 = testLockService.lock1(1);
     }
 
 
