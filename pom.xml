@@ -20,7 +20,8 @@
         <module>designer-freemarker</module>
         <module>designer-tools</module>
         <module>designer-dubbo-simple</module>
-        <module>designer-function-simple</module>
+        <module>designer-mybatis-generator</module>
+        <!-- <module>designer-function-simple</module>-->
     </modules>
 
     <properties>
@@ -41,6 +42,9 @@
         <dubbo.version>2.7.8</dubbo.version>
         <!-- pdf依赖 -->
         <flying-saucer-pdf.version>9.1.12</flying-saucer-pdf.version>
+        <!-- MyBatis依赖 -->
+        <mybatis-generator.version>1.4.0</mybatis-generator.version>
+        <mybatis.version>3.4.2</mybatis.version>
         <!-- 项目配置 -->
         <java.version>1.8</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>

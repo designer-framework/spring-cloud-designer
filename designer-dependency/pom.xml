@@ -45,6 +45,11 @@
                 <artifactId>designer-cache</artifactId>
                 <version>${designer.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.designer</groupId>
+                <artifactId>designer-mybatis-generator</artifactId>
+                <version>${designer.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
