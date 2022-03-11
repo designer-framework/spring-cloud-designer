@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<!-- 配置生成器 -->
+<generatorConfiguration>
+
+    <context id="mysql" defaultModelType="flat"
+             targetRuntime="org.designer.mybatis.ext.IntrospectedTableMyBatis3DynamicSqlImplV3"
+             introspectedColumnImpl="org.mybatis.generator.api.IntrospectedColumn">
+
+        <property name="modelSuperClass" value="org.designer.mybatis.base.entity.BaseEntity"/>
+
+        <property name="modelProject" value="designer-mybatis-generator/src/test/java"/>
+        <property name="javaModelPackage" value="org.designer.mybatis.model"/>
+
+        <property name="serviceProject" value="designer-mybatis-generator/src/test/java"/>
+        <property name="javaServicePackage" value="org.designer.mybatis.service"/>
+
+        <property name="serviceImplProject" value="designer-mybatis-generator/src/test/java"/>
+        <property name="javaServiceImplPackage" value="org.designer.mybatis.service.impl"/>
+
+        <property name="clientProject" value="designer-mybatis-generator/src/test/java"/>
+        <property name="javaClientPackage" value="org.designer.mybatis.mapper"/>
+
+        <property name="javaMapperProject" value="designer-mybatis-generator/src/test/java"/>
+        <property name="javaMapperPackage" value="org.designer.mybatis.mapper"/>
+
+        <property name="sqlXmlPackage" value="org.designer.mybatis"/>
+
+        <property name="javaFileEncoding" value="UTF-8"/>
+        <property name="javaFormatter" value="org.mybatis.generator.api.dom.DefaultJavaFormatter"/>
+        <property name="xmlFormatter" value="org.mybatis.generator.api.dom.DefaultXmlFormatter"/>
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+
+        <plugin type="org.designer.mybatis.plugins.model.SwaggerAnnotationPlugin"/>
+        <plugin type="org.designer.mybatis.plugins.mapper.BaseMapperPlugin"/>
+
+        <commentGenerator type="org.mybatis.generator.internal.DefaultCommentGenerator">
+            <property name="suppressAllComments" value="true"/>
+            <property name="suppressDate" value="false"/>
+            <property name="addRemarkComments" value="true"/>
+            <property name="dateFormat" value="yyyy-MM-dd HH:mm:ss"/>
+        </commentGenerator>
+
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://192.168.186.128:3306/xxl_job?useUnicode=true&amp;characterEncoding=utf8&amp;useSSL=false&amp;serverTimezone=Asia/Shanghai"
+                        userId="root"
+                        password="Onlyyouroo@@@">
+        </jdbcConnection>
+
+        <javaTypeResolver type="org.mybatis.generator.internal.types.JavaTypeResolverDefaultImpl">
+            <property name="forceBigDecimals" value="true"/>
+            <property name="useJSR310Types" value="false"/>
+        </javaTypeResolver>
+
+        <javaModelGenerator targetPackage="org.designer.mybatis.model"
+                            targetProject="designer-mybatis-generator/src/test/java">
+            <property name="constructorBased" value="false"/>
+            <property name="enableSubPackages" value="true"/>
+            <property name="immutable" value="false"/>
+            <property name="rootClass" value="org.designer.mybatis.base.entity.BaseEntity"/>
+            <property name="trimStrings" value="false"/>
+        </javaModelGenerator>
+
+        <!--xml-->
+        <sqlMapGenerator targetPackage="org.designer.mybatis"
+                         targetProject="designer-mybatis-generator/src/test/resources">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+
+        <javaClientGenerator targetPackage="org.designer.mybatis.mapper"
+                             targetProject="designer-mybatis-generator/src/test/java"
+                             type="">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+        <table tableName="xxl_job_log">
+            <property name="constructorBased" value="false"/>
+            <property name="ignoreQualifiersAtRuntime" value="false"/>
+            <property name="immutable" value="false"/>
+            <property name="modelOnly" value="false"/>
+            <property name="selectAllOrderByClause" value="age desc,username asc"/>
+            <property name="useActualColumnNames" value="false"/>
+            <columnOverride column="job_group" property="jobGroups">
+                <property name="property" value="job_group"/>
+            </columnOverride>
+        </table>
+    </context>
+
+</generatorConfiguration>
