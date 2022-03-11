@@ -1,4 +1,4 @@
-package org.designer.mybatis.base;
+package org.designer.mybatis.base.entity;
 
 /**
  * @description:

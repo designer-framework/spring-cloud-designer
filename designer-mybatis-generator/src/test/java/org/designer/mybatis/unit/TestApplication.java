@@ -1,19 +1,13 @@
 package org.designer.mybatis.unit;
 
 import org.designer.mybatis.SimpleTestApplication;
-import org.designer.mybatis.mapper.XxlJobLogDynamicSqlSupport;
 import org.designer.mybatis.model.XxlJobLog;
-import org.designer.mybatis.service.XxlJobService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mybatis.dynamic.sql.render.RenderingStrategies;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Arrays;
-
-import static org.mybatis.dynamic.sql.SqlBuilder.*;
 
 /**
  * @description:
@@ -24,8 +18,8 @@ import static org.mybatis.dynamic.sql.SqlBuilder.*;
 @SpringBootTest(classes = SimpleTestApplication.class)
 public class TestApplication {
 
-    @Autowired
-    private XxlJobService<XxlJobLog> xxlJobLogXxlJobService;
+   /* @Autowired
+    private XxlJobService xxlJobLogXxlJobService;
 
 
     @Test
@@ -36,12 +30,12 @@ public class TestApplication {
                         .build()
                         .render(RenderingStrategies.MYBATIS3)
         );
-    }
+    }*/
 
-
+/*
     @Test
     public void testInsert() {
-        xxlJobLogXxlJobService.insertBatch(Arrays.asList(new XxlJobLog()));
-    }
+        xxlJobLogXxlJobService.saveBatch(Arrays.asList(new XxlJobLog()));
+    }*/
 
 }

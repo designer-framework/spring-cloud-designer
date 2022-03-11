@@ -1,5 +1,7 @@
 package org.designer.mybatis.plugins.model;
 
+import org.designer.mybatis.utils.ClassUtils;
+import org.mybatis.generator.api.GeneratedXmlFile;
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;
@@ -22,9 +24,9 @@ public class SwaggerAnnotationPlugin extends PluginAdapter {
         boolean lombok;
         try {
             Class.forName("lombok.Data");
-            lombok =  true;
+            lombok = true;
         } catch (ClassNotFoundException e) {
-            lombok =  false;
+            lombok = false;
         }
         USE_LOMBOK = lombok;
     }
@@ -35,8 +37,13 @@ public class SwaggerAnnotationPlugin extends PluginAdapter {
     }
 
     @Override
+    public List<GeneratedXmlFile> contextGenerateAdditionalXmlFiles() {
+        return super.contextGenerateAdditionalXmlFiles();
+    }
+
+    @Override
     public boolean modelBaseRecordClassGenerated(TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
-        if(USE_LOMBOK){
+        if (USE_LOMBOK) {
             topLevelClass.addImportedType("lombok.Data");
             topLevelClass.addAnnotation("@Data");
             //
@@ -45,6 +52,9 @@ public class SwaggerAnnotationPlugin extends PluginAdapter {
             //
             topLevelClass.addImportedType("lombok.EqualsAndHashCode");
             topLevelClass.addAnnotation("@EqualsAndHashCode(callSuper = true)");
+            String superModel = (String)introspectedTable.getContext().getProperties().get("modelSuperClass");
+            topLevelClass.setSuperClass(ClassUtils.shortName(superModel));
+            topLevelClass.addImportedType(superModel);
         }
         return true;
     }
@@ -58,7 +68,7 @@ public class SwaggerAnnotationPlugin extends PluginAdapter {
 
     @Override
     public boolean modelGetterMethodGenerated(Method method, TopLevelClass topLevelClass, IntrospectedColumn introspectedColumn, IntrospectedTable introspectedTable, ModelClassType modelClassType) {
-       return !USE_LOMBOK;
+        return !USE_LOMBOK;
     }
 
     @Override

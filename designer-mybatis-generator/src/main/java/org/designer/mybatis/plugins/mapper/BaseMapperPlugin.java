@@ -1,10 +1,11 @@
 package org.designer.mybatis.plugins.mapper;
 
+import org.designer.mybatis.base.mapper.BaseMapper;
+import org.designer.mybatis.utils.ClassUtils;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.api.dom.java.Interface;
-import org.springframework.util.ClassUtils;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ import java.util.List;
  */
 public class BaseMapperPlugin extends PluginAdapter {
 
-    private static final String BASE_MAPPER = "org.designer.mybatis.base.BaseMapper";
+    public static final String BASE_MAPPER = BaseMapper.class.getName();
 
     @Override
     public boolean validate(List<String> list) {
@@ -25,12 +26,20 @@ public class BaseMapperPlugin extends PluginAdapter {
     @Override
     public boolean clientGenerated(Interface interfaze, IntrospectedTable introspectedTable) {
         interfaze.addImportedType(new FullyQualifiedJavaType(BASE_MAPPER));
-        interfaze.addSuperInterface(new FullyQualifiedJavaType(getClientGenericInterfaceName(introspectedTable)));
+        interfaze.addSuperInterface(createMapperSuperInterfaceName(introspectedTable));
         return true;
     }
 
-    private String getClientGenericInterfaceName(IntrospectedTable introspectedTable) {
-        return BASE_MAPPER + "<" + ClassUtils.getShortName(introspectedTable.getBaseRecordType()) +  ">";
+    /**
+     * BaseMapper 加泛型
+     *
+     * @param introspectedTable
+     * @return
+     */
+    private FullyQualifiedJavaType createMapperSuperInterfaceName(IntrospectedTable introspectedTable) {
+        FullyQualifiedJavaType fullyQualifiedJavaType = new FullyQualifiedJavaType(BASE_MAPPER);
+        fullyQualifiedJavaType.addTypeArgument(ClassUtils.shortRecordFullyQualifiedJavaType(introspectedTable));
+        return new FullyQualifiedJavaType(fullyQualifiedJavaType.getShortName());
     }
 
 }

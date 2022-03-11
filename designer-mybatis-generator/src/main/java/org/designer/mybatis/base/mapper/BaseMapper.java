@@ -1,6 +1,5 @@
-package org.designer.mybatis.base;
+package org.designer.mybatis.base.mapper;
 
-import org.mybatis.dynamic.sql.BasicColumn;
 import org.mybatis.dynamic.sql.delete.DeleteDSLCompleter;
 import org.mybatis.dynamic.sql.select.SelectDSLCompleter;
 import org.mybatis.dynamic.sql.select.render.SelectStatementProvider;

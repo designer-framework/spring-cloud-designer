@@ -32,8 +32,15 @@
             2，MyBatis3DynamicSql
         introspectedColumnImpl：类全限定名，用于扩展MBG
     -->
-    <context id="mysql" defaultModelType="flat" targetRuntime="MyBatis3DynamicSql"
+    <context id="mysql" defaultModelType="flat" targetRuntime="org.designer.mybatis.ext.IntrospectedTableMyBatis3DynamicSqlImplV3"
              introspectedColumnImpl="org.mybatis.generator.api.IntrospectedColumn">
+
+        <property name="serviceProject" value="designer-mybatis-generator/src/test/java"/>
+        <property name="javaServicePackage" value="org.designer.mybatis.service"/>
+
+        <property name="serviceImplProject" value="designer-mybatis-generator/src/test/java"/>
+        <property name="javaServiceImplPackage" value="org.designer.mybatis.service.impl"/>
+
 
         <!-- 自动识别数据库关键字，默认false，如果设置为true，根据SqlReservedWords中定义的关键字列表；
             一般保留默认值，遇到数据库关键字（Java关键字），使用columnOverride覆盖
@@ -118,7 +125,7 @@
                 注意：如果在key class或者record class中有root class相同的属性，MBG就不会重新生成这些属性了，包括：
                     1，属性名相同，类型相同，有相同的getter/setter方法；
              -->
-            <property name="rootClass" value="org.designer.mybatis.base.BaseEntity"/>
+            <property name="rootClass" value="org.designer.mybatis.base.entity.BaseEntity"/>
             <!-- 设置是否在getter方法中，对String类型字段调用trim()方法 -->
             <property name="trimStrings" value="false"/>
         </javaModelGenerator>
@@ -129,7 +136,7 @@
             targetPackage/targetProject:同javaModelGenerator
          -->
         <sqlMapGenerator targetPackage="org.designer.mybatis"
-                         targetProject="designer-mybatis-generator/src/main/resources">
+                         targetProject="designer-mybatis-generator/src/test/resources">
             <!-- 在targetPackage的基础上，根据数据库的schema再生成一层package，最终生成的类放在这个package下，默认为false -->
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
@@ -140,7 +147,7 @@
                              type="">
             <property name="enableSubPackages" value="true"/>
             <!-- 通过BaseMapperPlugin插件增强, 不使用官方工具来生成 -->
-            <!--<property name="rootInterface" value="org.designer.mybatis.base.BaseMapper&lt;&gt;"/>-->
+            <!--<property name="rootInterface" value="org.designer.mybatis.base.mapper.BaseMapper&lt;&gt;"/>-->
         </javaClientGenerator>
 
         <!-- 选择一个table来生成相关文件，可以有一个或多个table，必须要有table元素
@@ -182,47 +189,35 @@
             注意，table里面很多参数都是对javaModelGenerator，context等元素的默认属性的一个复写；
          -->
         <table tableName="xxl_job_log">
-
             <!-- 参考 javaModelGenerator 的 constructorBased属性-->
             <property name="constructorBased" value="false"/>
-
             <!-- 默认为false，如果设置为true，在生成的SQL中，table名字不会加上catalog或schema； -->
             <property name="ignoreQualifiersAtRuntime" value="false"/>
-
             <!-- 参考 javaModelGenerator 的 immutable 属性 -->
             <property name="immutable" value="false"/>
-
             <!-- 指定是否只生成domain类，如果设置为true，只生成domain类，如果还配置了sqlMapGenerator，那么在mapper XML文件中，只生成resultMap元素 -->
             <property name="modelOnly" value="false"/>
-
             <!-- 参考 javaModelGenerator 的 rootClass 属性
             <property name="rootClass" value=""/>
              -->
-
             <!-- 参考javaClientGenerator 的  rootInterface 属性
             <property name="rootInterface" value=""/>
             -->
-
             <!-- 如果设置了runtimeCatalog，那么在生成的SQL中，使用该指定的catalog，而不是table元素上的catalog
             <property name="runtimeCatalog" value=""/>
             -->
-
             <!-- 如果设置了runtimeSchema，那么在生成的SQL中，使用该指定的schema，而不是table元素上的schema
             <property name="runtimeSchema" value=""/>
             -->
-
             <!-- 如果设置了runtimeTableName，那么在生成的SQL中，使用该指定的tablename，而不是table元素上的tablename
             <property name="runtimeTableName" value=""/>
             -->
-
             <!-- 注意，该属性只针对MyBatis3Simple有用；
                 如果选择的runtime是MyBatis3Simple，那么会生成一个SelectAll方法，如果指定了selectAllOrderByClause，那么会在该SQL中添加指定的这个order条件；
              -->
             <property name="selectAllOrderByClause" value="age desc,username asc"/>
-
             <!-- 如果设置为true，生成的model类会直接使用column本身的名字，而不会再使用驼峰命名方法，比如BORN_DATE，生成的属性名字就是BORN_DATE,而不会是bornDate -->
             <property name="useActualColumnNames" value="false"/>
-
             <!-- generatedKey用于生成生成主键的方法，
                 如果设置了该元素，MBG会在生成的<insert>元素中生成一条正确的<selectKey>元素，该元素可选
                 column:主键的列名；
@@ -239,7 +234,6 @@
                     JDBC      :相当于在生成的insert元素上添加useGeneratedKeys="true"和keyProperty属性
             <generatedKey column="" sqlStatement=""/>
              -->
-
             <!--
                 该元素会在根据表中列名计算对象属性名之前先重命名列名，非常适合用于表中的列都有公用的前缀字符串的时候，
                 比如列名为：CUST_ID,CUST_NAME,CUST_EMAIL,CUST_ADDRESS等；
@@ -248,47 +242,37 @@
 
                 注意，MBG是使用java.util.regex.Matcher.replaceAll来替换searchString和replaceString的，
                 如果使用了columnOverride元素，该属性无效；
-
             <columnRenamingRule searchString="" replaceString=""/>
              -->
-
-
             <!-- 用来修改表中某个列的属性，MBG会使用修改后的列来生成domain的属性；
                column:要重新设置的列名；
                注意，一个table元素中可以有多个columnOverride元素哈~
              -->
-            <columnOverride column="job_group">
+            <columnOverride column="job_group" property="jobGroups">
                 <!-- 使用property属性来指定列要生成的属性名称 -->
-                <property name="property" value="job_groups"/>
-
+                <property name="property" value="job_group"/>
                 <!-- javaType用于指定生成的domain的属性类型，使用类型的全限定名
                 <property name="javaType" value=""/>
                  -->
-
                 <!-- jdbcType用于指定该列的JDBC类型
                 <property name="jdbcType" value=""/>
                  -->
-
                 <!-- typeHandler 用于指定该列使用到的TypeHandler，如果要指定，配置类型处理器的全限定名
                     注意，mybatis中，不会生成到mybatis-config.xml中的typeHandler
                     只会生成类似：where id = #{id,jdbcType=BIGINT,typeHandler=com._520it.mybatis.MyTypeHandler}的参数描述
                 <property name="jdbcType" value=""/>
                 -->
-
                 <!-- 参考table元素的delimitAllColumns配置，默认为false
                 <property name="delimitedColumnName" value=""/>
                  -->
             </columnOverride>
-
             <!-- ignoreColumn设置一个MGB忽略的列，如果设置了改列，那么在生成的domain中，生成的SQL中，都不会有该列出现
                column:指定要忽略的列的名字；
                delimitedColumnName：参考table元素的delimitAllColumns配置，默认为false
-
                注意，一个table元素中可以有多个ignoreColumn元素
             <ignoreColumn column="deptId" delimitedColumnName=""/>
             -->
         </table>
-
     </context>
 
 </generatorConfiguration>

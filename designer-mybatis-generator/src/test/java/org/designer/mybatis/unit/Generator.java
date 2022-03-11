@@ -17,17 +17,13 @@ import java.util.List;
 public class Generator {
 
     public static void main(String[] args) throws Exception {
-        List<String> warnings = new ArrayList<String>();
-        boolean overwrite = true;
+        List<String> warnings = new ArrayList<>();
         //获取类加载器
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
         //类加载器在classpach：下获取配置文件
         InputStream is = classloader.getResourceAsStream("mybatis-generator-config.xml");
-        ConfigurationParser cp = new ConfigurationParser(warnings);
-        Configuration config = cp.parseConfiguration(is);
-        DefaultShellCallback callback = new DefaultShellCallback(overwrite) {
-        };
-        MyBatisGenerator myBatisGenerator = new MyBatisGenerator(config, callback, warnings);
+        Configuration config = new ConfigurationParser(warnings).parseConfiguration(is);
+        MyBatisGenerator myBatisGenerator = new MyBatisGenerator(config, new DefaultShellCallback(true), warnings);
         myBatisGenerator.generate(null);
     }
 
