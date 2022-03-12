@@ -9,24 +9,37 @@
              targetRuntime="org.designer.mybatis.ext.IntrospectedTableMyBatis3DynamicSqlImplV3"
              introspectedColumnImpl="org.mybatis.generator.api.IntrospectedColumn">
 
+        <!-- 模块名 -->
+        <property name="modelName" value="student"/>
+
+        <!-- 实体类 父类路径 -->
         <property name="modelSuperClass" value="org.designer.mybatis.base.entity.BaseEntity"/>
 
+        <!-- 实体类 项目路径 -->
         <property name="modelProject" value="designer-mybatis-generator/src/test/java"/>
-        <property name="javaModelPackage" value="org.designer.mybatis.model"/>
+        <!-- 实体类 包路径 -->
+        <property name="javaModelPackage" value="org.designer.%s.model"/>
 
+        <!-- Service 项目路径 -->
         <property name="serviceProject" value="designer-mybatis-generator/src/test/java"/>
-        <property name="javaServicePackage" value="org.designer.mybatis.service"/>
+        <!-- Service 包路径 -->
+        <property name="javaServicePackage" value="org.designer.%s.service"/>
 
+        <!-- ServiceImpl 项目路径 -->
         <property name="serviceImplProject" value="designer-mybatis-generator/src/test/java"/>
-        <property name="javaServiceImplPackage" value="org.designer.mybatis.service.impl"/>
+        <!-- ServiceImpl 包路径 -->
+        <property name="javaServiceImplPackage" value="org.designer.%s.service.impl"/>
 
         <property name="clientProject" value="designer-mybatis-generator/src/test/java"/>
-        <property name="javaClientPackage" value="org.designer.mybatis.mapper"/>
+        <property name="javaClientPackage" value="org.designer.%s.mapper"/>
 
+        <!-- XML的Interface路径 -->
         <property name="javaMapperProject" value="designer-mybatis-generator/src/test/java"/>
-        <property name="javaMapperPackage" value="org.designer.mybatis.mapper"/>
+        <!-- XML的Resource路径 -->
+        <property name="xmlMapperPackage" value="mapper.%s"/>
 
-        <property name="sqlXmlPackage" value="org.designer.mybatis"/>
+        <!-- 暂时没用 -->
+        <property name="sqlMapPackage" value="mybatis.%s"/>
 
         <property name="javaFileEncoding" value="UTF-8"/>
         <property name="javaFormatter" value="org.mybatis.generator.api.dom.DefaultJavaFormatter"/>
@@ -81,9 +94,8 @@
             <property name="ignoreQualifiersAtRuntime" value="false"/>
             <property name="immutable" value="false"/>
             <property name="modelOnly" value="false"/>
-            <property name="selectAllOrderByClause" value="age desc,username asc"/>
             <property name="useActualColumnNames" value="false"/>
-            <columnOverride column="job_group" property="jobGroups">
+            <columnOverride column="job_group" property="jobGroup">
                 <property name="property" value="job_group"/>
             </columnOverride>
         </table>

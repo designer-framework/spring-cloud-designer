@@ -1,6 +1,6 @@
 package org.designer.mybatis.generator;
 
-import org.designer.mybatis.plugins.mapper.BaseMapperPlugin;
+import org.designer.mybatis.utils.MybatisUtils;
 import org.mybatis.dynamic.sql.SqlBuilder;
 import org.mybatis.generator.api.dom.java.CompilationUnit;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
@@ -8,6 +8,7 @@ import org.mybatis.generator.api.dom.java.JavaVisibility;
 import org.mybatis.generator.api.dom.java.TopLevelClass;
 import org.mybatis.generator.codegen.AbstractJavaGenerator;
 import org.mybatis.generator.internal.util.messages.Messages;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,12 +40,20 @@ public class ServiceImplGenerator extends AbstractJavaGenerator {
         topLevelClass.addImportedType(introspectedTable.getBaseRecordType());
         topLevelClass.addImportedType(getServiceName());
         //继承通用类
-        FullyQualifiedJavaType baseServiceImplInterface = new FullyQualifiedJavaType(toShortClassName(ATTR_BASE_SERVICE_IMPL_VALUE));
-        baseServiceImplInterface.addTypeArgument(new FullyQualifiedJavaType(getShortBaseRecordClassName()));
-        baseServiceImplInterface.addTypeArgument(new FullyQualifiedJavaType(introspectedTable.getMyBatis3JavaMapperType()));
+        FullyQualifiedJavaType baseServiceImplInterface = new FullyQualifiedJavaType(MybatisUtils.shortName(ATTR_BASE_SERVICE_IMPL_VALUE));
+        baseServiceImplInterface.addTypeArgument(
+                new FullyQualifiedJavaType(MybatisUtils.shortName(introspectedTable.getBaseRecordType()))
+        );
+        baseServiceImplInterface.addTypeArgument(
+                new FullyQualifiedJavaType(introspectedTable.getMyBatis3JavaMapperType())
+        );
         topLevelClass.setSuperClass(baseServiceImplInterface);
         topLevelClass.addImportedType(introspectedTable.getMyBatis3JavaMapperType());
         topLevelClass.addImportedType(ATTR_BASE_SERVICE_IMPL_VALUE);
+
+        //Service类
+        topLevelClass.addAnnotation("@Service");
+        topLevelClass.addImportedType(Service.class.getName());
         //导入工具类
         importStaticSqlUtils(topLevelClass);
         //
@@ -54,38 +63,30 @@ public class ServiceImplGenerator extends AbstractJavaGenerator {
         return answer;
     }
 
-    String getServiceImpl() {
-        return getContext().getProperty("javaServiceImplPackage") + "." + getShortServiceName() + "Impl";
+    private String getServiceImpl() {
+        return getFormatProperty("javaServiceImplPackage") + "." + getShortServiceName() + "Impl";
     }
 
-    String getShortServiceName() {
+    protected String getFormatProperty(String key, String... defaultVal) {
+        return MybatisUtils.getFormatProperty(context, key, defaultVal);
+    }
+
+    private String getShortServiceName() {
         return new FullyQualifiedJavaType(getServiceName()).getShortName();
     }
 
-    String getServiceName() {
+    private String getServiceName() {
         return (String) introspectedTable.getAttribute(ServiceGenerator.ATTR_SERVICE_TYPE);
     }
 
     private void importStaticSqlUtils(TopLevelClass topLevelClass) {
         //代码中编写SQL语句时用到的  SQL语句构建工具类  及  字段工具类
-        topLevelClass.addStaticImport(toStaticImport(SqlBuilder.class.getName()));
-        topLevelClass.addStaticImport(toStaticImport(introspectedTable.getMyBatisDynamicSqlSupportType()));
+        topLevelClass.addStaticImport(staticImport(SqlBuilder.class.getName()));
+        topLevelClass.addStaticImport(staticImport(introspectedTable.getMyBatisDynamicSqlSupportType()));
     }
 
-    private String toStaticImport(String className) {
-        return toStaticImport(new FullyQualifiedJavaType(className));
-    }
-
-    private String toStaticImport(FullyQualifiedJavaType fullyQualifiedJavaType) {
-        return fullyQualifiedJavaType.getFullyQualifiedNameWithoutTypeParameters() + ".*";
-    }
-
-    private String getShortBaseRecordClassName() {
-        return toShortClassName(introspectedTable.getBaseRecordType());
-    }
-
-    private String toShortClassName(String className) {
-        return new FullyQualifiedJavaType(className).getShortName();
+    private String staticImport(String className) {
+        return new FullyQualifiedJavaType(className).getFullyQualifiedNameWithoutTypeParameters() + ".*";
     }
 
 }

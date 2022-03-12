@@ -63,13 +63,13 @@
 
     <!-- mybatis代码生成插件 -->
     <build>
-        <plugins>
+        <plugins><!--
             <plugin>
                 <groupId>org.mybatis.generator</groupId>
                 <artifactId>mybatis-generator-maven-plugin</artifactId>
                 <version>${mybatis-generator.version}</version>
                 <configuration>
-                    <!--配置文件的位置-->
+                    &lt;!&ndash;配置文件的位置&ndash;&gt;
                     <configurationFile>src/test/resources/mybatis-generator-config.xml</configurationFile>
                     <verbose>true</verbose>
                     <overwrite>true</overwrite>
@@ -89,7 +89,7 @@
                         <version>${mybatis-generator.version}</version>
                     </dependency>
                 </dependencies>
-            </plugin>
+            </plugin>-->
         </plugins>
     </build>
 

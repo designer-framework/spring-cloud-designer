@@ -3,6 +3,7 @@ package org.designer.mybatis.ext;
 import org.designer.mybatis.generator.DynamicSqlMapperGeneratorV3;
 import org.designer.mybatis.generator.ServiceGenerator;
 import org.designer.mybatis.generator.ServiceImplGenerator;
+import org.designer.mybatis.utils.MybatisUtils;
 import org.mybatis.generator.api.ProgressCallback;
 import org.mybatis.generator.codegen.AbstractJavaClientGenerator;
 import org.mybatis.generator.codegen.AbstractJavaGenerator;
@@ -10,7 +11,6 @@ import org.mybatis.generator.codegen.mybatis3.xmlmapper.XMLMapperGenerator;
 import org.mybatis.generator.runtime.dynamic.sql.IntrospectedTableMyBatis3DynamicSqlImplV2;
 
 import java.util.List;
-import java.util.Properties;
 
 /**
  * @description:
@@ -45,32 +45,33 @@ public class IntrospectedTableMyBatis3DynamicSqlImplV3 extends IntrospectedTable
 
     @Override
     protected String calculateJavaClientInterfacePackage() {
-        return getProperties("javaClientPackage", super.calculateJavaClientInterfacePackage());
+        return getFormatProperty("javaClientPackage", super.calculateJavaClientInterfacePackage());
     }
 
     @Override
     protected String calculateJavaModelPackage() {
-        return getProperties("javaModelPackage", super.calculateJavaModelPackage());
+        return getFormatProperty("javaModelPackage", super.calculateJavaModelPackage());
     }
 
     @Override
     protected String calculateSqlMapPackage() {
-        return getProperties("sqlXmlPackage", super.calculateSqlMapPackage());
+        return getFormatProperty("sqlMapPackage", super.calculateSqlMapPackage());
     }
 
     @Override
     public String getMyBatis3XmlMapperPackage() {
-        return getProperties("javaMapperPackage", super.getMyBatis3XmlMapperPackage());
+        return getFormatProperty("xmlMapperPackage", super.getMyBatis3XmlMapperPackage());
     }
 
     @Override
     protected String getClientProject() {
-        return getProperties("clientProject", super.getClientProject());
+        return getFormatProperty("clientProject", super.getClientProject());
     }
+
 
     @Override
     protected String getModelProject() {
-        return getProperties("moduleProject", super.getModelProject());
+        return getFormatProperty("moduleProject", super.getClientProject());
     }
 
     @Override
@@ -82,7 +83,10 @@ public class IntrospectedTableMyBatis3DynamicSqlImplV3 extends IntrospectedTable
 
     @Override
     protected AbstractJavaClientGenerator createJavaClientGenerator() {
-        return context.getJavaClientGeneratorConfiguration() == null ? null : new DynamicSqlMapperGeneratorV3(getProperties("javaMapperProject", getClientProject()));
+        return context.getJavaClientGeneratorConfiguration() == null ? null :
+                new DynamicSqlMapperGeneratorV3(
+                        getFormatProperty("javaMapperProject", super.getClientProject())
+                );
     }
 
     /**
@@ -98,7 +102,7 @@ public class IntrospectedTableMyBatis3DynamicSqlImplV3 extends IntrospectedTable
     }
 
     protected String getServiceProject() {
-        return getProperties("serviceProject", super.getClientProject());
+        return getFormatProperty("serviceProject", super.getClientProject());
     }
 
     /**
@@ -114,15 +118,11 @@ public class IntrospectedTableMyBatis3DynamicSqlImplV3 extends IntrospectedTable
     }
 
     protected String getServiceImplProject() {
-        return getProperties("serviceImplProject", super.getClientProject());
+        return getFormatProperty("serviceImplProject", super.getClientProject());
     }
 
-    protected String getProperties(String key, String defaultVal) {
-        return getProperties().getProperty(key, defaultVal);
-    }
-
-    protected Properties getProperties() {
-        return getContext().getProperties();
+    protected String getFormatProperty(String key, String... defaultVal) {
+        return MybatisUtils.getFormatProperty(context, key, defaultVal);
     }
 
 }

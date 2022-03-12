@@ -1,6 +1,6 @@
 package org.designer.mybatis.plugins.model;
 
-import org.designer.mybatis.utils.ClassUtils;
+import org.designer.mybatis.utils.MybatisUtils;
 import org.mybatis.generator.api.GeneratedXmlFile;
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
@@ -53,7 +53,7 @@ public class SwaggerAnnotationPlugin extends PluginAdapter {
             topLevelClass.addImportedType("lombok.EqualsAndHashCode");
             topLevelClass.addAnnotation("@EqualsAndHashCode(callSuper = true)");
             String superModel = (String)introspectedTable.getContext().getProperties().get("modelSuperClass");
-            topLevelClass.setSuperClass(ClassUtils.shortName(superModel));
+            topLevelClass.setSuperClass(MybatisUtils.shortName(superModel));
             topLevelClass.addImportedType(superModel);
         }
         return true;

@@ -1,7 +1,6 @@
 package org.designer.mybatis.plugins.mapper;
 
 import org.designer.mybatis.base.mapper.BaseMapper;
-import org.designer.mybatis.utils.ClassUtils;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
@@ -38,7 +37,8 @@ public class BaseMapperPlugin extends PluginAdapter {
      */
     private FullyQualifiedJavaType createMapperSuperInterfaceName(IntrospectedTable introspectedTable) {
         FullyQualifiedJavaType fullyQualifiedJavaType = new FullyQualifiedJavaType(BASE_MAPPER);
-        fullyQualifiedJavaType.addTypeArgument(ClassUtils.shortRecordFullyQualifiedJavaType(introspectedTable));
+        fullyQualifiedJavaType.addTypeArgument(new FullyQualifiedJavaType(introspectedTable.getBaseRecordType()));
+
         return new FullyQualifiedJavaType(fullyQualifiedJavaType.getShortName());
     }
 

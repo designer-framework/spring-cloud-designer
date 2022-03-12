@@ -4,6 +4,7 @@ import org.designer.mybatis.base.mapper.BaseMapper;
 import org.mybatis.dynamic.sql.select.SelectDSLCompleter;
 import org.mybatis.dynamic.sql.select.render.SelectStatementProvider;
 import org.mybatis.dynamic.sql.update.render.UpdateStatementProvider;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -19,18 +20,22 @@ public interface IService<T> {
 
     BaseMapper<T> getBaseMapper();
 
+    @Transactional(rollbackFor = Exception.class)
     default int deleteById(Serializable id_) {
         return getBaseMapper().deleteByPrimaryKey(id_);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     default int save(T record) {
         return getBaseMapper().insert(record);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     default int saveBatch(Collection<T> records) {
         return getBaseMapper().insertMultiple(records);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     default int saveSelective(T record) {
         return getBaseMapper().insertSelective(record);
     }
@@ -39,10 +44,12 @@ public interface IService<T> {
         return getBaseMapper().selectByPrimaryKey(id_);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     default int updateById(T record) {
         return getBaseMapper().updateByPrimaryKey(record);
     };
 
+    @Transactional(rollbackFor = Exception.class)
     default int updateByIdSelective(T record) {
         return getBaseMapper().updateByPrimaryKeySelective(record);
     }
@@ -63,6 +70,7 @@ public interface IService<T> {
      * @param var1
      * @return
      */
+    @Transactional(rollbackFor = Exception.class)
     int updateSelective(UpdateStatementProvider var1);
 
 }

@@ -1,7 +1,7 @@
 package org.designer.mybatis.generator;
 
 import org.designer.mybatis.base.service.IService;
-import org.designer.mybatis.utils.ClassUtils;
+import org.designer.mybatis.utils.MybatisUtils;
 import org.mybatis.generator.api.dom.java.CompilationUnit;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.api.dom.java.Interface;
@@ -59,15 +59,15 @@ public class ServiceGenerator extends AbstractJavaGenerator {
     }
 
     protected String getService() {
-        return getContext().getProperty("javaServicePackage") + "." + getShortBaseRecordClassName() + "Service";
+        return MybatisUtils.getFormatProperty(context, "javaServicePackage") + "." + getShortBaseRecordClassName() + "Service";
     }
 
     private String getShortBaseRecordClassName() {
-        return ClassUtils.shortName(introspectedTable.getBaseRecordType());
+        return MybatisUtils.shortName(introspectedTable.getBaseRecordType());
     }
 
     private String getShortBaseServiceClassName() {
-        return ClassUtils.shortName(ATTR_BASE_SERVICE_VALUE);
+        return MybatisUtils.shortName(ATTR_BASE_SERVICE_VALUE);
     }
 
 

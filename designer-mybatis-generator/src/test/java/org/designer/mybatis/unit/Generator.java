@@ -1,7 +1,9 @@
 package org.designer.mybatis.unit;
 
+import org.designer.mybatis.utils.MybatisUtils;
 import org.mybatis.generator.api.MyBatisGenerator;
 import org.mybatis.generator.config.Configuration;
+import org.mybatis.generator.config.TableConfiguration;
 import org.mybatis.generator.config.xml.ConfigurationParser;
 import org.mybatis.generator.internal.DefaultShellCallback;
 
@@ -23,6 +25,14 @@ public class Generator {
         //类加载器在classpach：下获取配置文件
         InputStream is = classloader.getResourceAsStream("mybatis-generator-config.xml");
         Configuration config = new ConfigurationParser(warnings).parseConfiguration(is);
+        config.getContexts().forEach(context -> {
+            List<TableConfiguration> tableConfigurations = context.getTableConfigurations();
+            tableConfigurations.forEach(tableConfiguration -> {
+                tableConfiguration.setTableName(
+                        String.format(tableConfiguration.getTableName(), MybatisUtils.getFormatProperty(context, "modelName"))
+                );
+            });
+        });
         MyBatisGenerator myBatisGenerator = new MyBatisGenerator(config, new DefaultShellCallback(true), warnings);
         myBatisGenerator.generate(null);
     }
