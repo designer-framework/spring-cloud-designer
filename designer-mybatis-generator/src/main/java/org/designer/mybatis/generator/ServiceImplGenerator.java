@@ -41,13 +41,11 @@ public class ServiceImplGenerator extends AbstractJavaGenerator {
         topLevelClass.addImportedType(getServiceName());
         //继承通用类
         FullyQualifiedJavaType baseServiceImplInterface = new FullyQualifiedJavaType(MybatisUtils.shortName(ATTR_BASE_SERVICE_IMPL_VALUE));
-        baseServiceImplInterface.addTypeArgument(
-                new FullyQualifiedJavaType(MybatisUtils.shortName(introspectedTable.getBaseRecordType()))
-        );
-        baseServiceImplInterface.addTypeArgument(
-                new FullyQualifiedJavaType(introspectedTable.getMyBatis3JavaMapperType())
-        );
+        baseServiceImplInterface.addTypeArgument(MybatisUtils.shortFullyQualifiedJavaType(introspectedTable.getPrimaryKeyType()));
+        baseServiceImplInterface.addTypeArgument(MybatisUtils.shortFullyQualifiedJavaType(introspectedTable.getBaseRecordType()));
+        baseServiceImplInterface.addTypeArgument(MybatisUtils.shortFullyQualifiedJavaType(introspectedTable.getMyBatis3JavaMapperType()));
         topLevelClass.setSuperClass(baseServiceImplInterface);
+        topLevelClass.addImportedType(introspectedTable.getPrimaryKeyType());
         topLevelClass.addImportedType(introspectedTable.getMyBatis3JavaMapperType());
         topLevelClass.addImportedType(ATTR_BASE_SERVICE_IMPL_VALUE);
 

@@ -10,5 +10,5 @@ import org.designer.student.service.XxlJobLogService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class XxlJobLogServiceImpl extends IServiceImpl<XxlJobLog, XxlJobLogMapper> implements XxlJobLogService {
+public class XxlJobLogServiceImpl extends IServiceImpl<Long, XxlJobLog, XxlJobLogMapper> implements XxlJobLogService {
 }

@@ -44,8 +44,10 @@ public class ServiceGenerator extends AbstractJavaGenerator {
         FullyQualifiedJavaType fullyQualifiedJavaType = new FullyQualifiedJavaType(getShortBaseServiceClassName());
         serviceInterface.addImportedType(new FullyQualifiedJavaType(ATTR_BASE_SERVICE_VALUE));
         //指定继承类的泛型
-        fullyQualifiedJavaType.addTypeArgument(new FullyQualifiedJavaType(getShortBaseRecordClassName()));
+        fullyQualifiedJavaType.addTypeArgument(MybatisUtils.shortFullyQualifiedJavaType(introspectedTable.getPrimaryKeyType()));
+        fullyQualifiedJavaType.addTypeArgument(MybatisUtils.shortFullyQualifiedJavaType(introspectedTable.getBaseRecordType()));
         //导入泛型类的包
+        serviceInterface.addImportedType(new FullyQualifiedJavaType(introspectedTable.getPrimaryKeyType()));
         serviceInterface.addImportedType(new FullyQualifiedJavaType(introspectedTable.getBaseRecordType()));
         //将生成的类集成到主类中
         serviceInterface.addSuperInterface(fullyQualifiedJavaType);

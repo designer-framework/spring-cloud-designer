@@ -2,60 +2,58 @@ package org.designer.mybatis.base.service.impl;
 
 import org.designer.mybatis.base.mapper.BaseMapper;
 import org.designer.mybatis.base.service.IService;
-import org.mybatis.dynamic.sql.select.render.SelectStatementProvider;
-import org.mybatis.dynamic.sql.update.render.UpdateStatementProvider;
+import org.mybatis.dynamic.sql.delete.DeleteDSLCompleter;
+import org.mybatis.dynamic.sql.select.CountDSLCompleter;
+import org.mybatis.dynamic.sql.select.SelectDSLCompleter;
+import org.mybatis.dynamic.sql.update.UpdateDSLCompleter;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
+import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @description:
  * @author: Designer
  * @date : 2022/3/5 3:33
  */
-public class IServiceImpl<T, E extends BaseMapper<T>> implements IService<T> {
-
-    private Class<T> tClass;
+public class IServiceImpl<I extends Serializable, E, M extends BaseMapper<I, E>> implements IService<I, E> {
 
     @Autowired
-    private E baseMapper;
+    private M baseMapper;
 
-    private T toModel(Map<String, Object> map) {
-        if (tClass == null) {
-            synchronized (this) {
-                Type superClass = getClass().getGenericSuperclass();
-                tClass = (Class<T>) ((ParameterizedType) superClass).getActualTypeArguments()[0];
-            }
-        }
-        return null;
+    @Override
+    public M getBaseMapper() {
+        return baseMapper;
     }
 
     @Override
-    public long count(SelectStatementProvider provider) {
-        return baseMapper.count(provider);
+    public long count(CountDSLCompleter completer) {
+        return baseMapper.count(completer);
     }
 
     @Override
-    public T getOne(SelectStatementProvider completer) {
+    public E getOne(SelectDSLCompleter completer) {
         return baseMapper.selectOne(completer).orElse(null);
     }
 
     @Override
-    public List<T> list(SelectStatementProvider selectStatement) {
-        return baseMapper.selectMany(selectStatement, this::toModel);
+    public List<E> list(SelectDSLCompleter completer) {
+        return baseMapper.select(completer);
     }
 
     @Override
-    public int updateSelective(UpdateStatementProvider provider) {
-        return baseMapper.update(provider);
+    public int update(UpdateDSLCompleter completer) {
+        return baseMapper.update(completer);
     }
 
     @Override
-    public E getBaseMapper() {
-        return baseMapper;
+    public int update(E record, E eqWhere) {
+        return baseMapper.update(record, eqWhere);
+    }
+
+    @Override
+    public int delete(DeleteDSLCompleter completer) {
+        return baseMapper.delete(completer);
     }
 
 }

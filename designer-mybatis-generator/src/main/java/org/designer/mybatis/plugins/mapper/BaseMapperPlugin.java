@@ -37,6 +37,7 @@ public class BaseMapperPlugin extends PluginAdapter {
      */
     private FullyQualifiedJavaType createMapperSuperInterfaceName(IntrospectedTable introspectedTable) {
         FullyQualifiedJavaType fullyQualifiedJavaType = new FullyQualifiedJavaType(BASE_MAPPER);
+        fullyQualifiedJavaType.addTypeArgument(new FullyQualifiedJavaType(introspectedTable.getPrimaryKeyType()));
         fullyQualifiedJavaType.addTypeArgument(new FullyQualifiedJavaType(introspectedTable.getBaseRecordType()));
 
         return new FullyQualifiedJavaType(fullyQualifiedJavaType.getShortName());

@@ -25,10 +25,10 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.designer.student.mapper.XxlJobLogDynamicSqlSupport.*;
-import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
+import static org.mybatis.dynamic.sql.SqlBuilder.*;
 
 @Mapper
-public interface XxlJobLogMapper extends BaseMapper<XxlJobLog> {
+public interface XxlJobLogMapper extends BaseMapper<Long, XxlJobLog> {
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
     BasicColumn[] selectList = BasicColumn.columnList(id, jobGroup, jobId, executorAddress, executorHandler, executorParam, executorShardingParam, executorFailRetryCount, triggerTime, triggerCode, handleTime, handleCode, alarmStatus, triggerMsg, handleMsg);
 
@@ -216,6 +216,22 @@ public interface XxlJobLogMapper extends BaseMapper<XxlJobLog> {
         return selectOne(c ->
                 c.where(id, isEqualTo(id_))
         );
+    }
+
+    default int update(XxlJobLog record, XxlJobLog eqWhere) {
+        return update(modelUpdateDSL -> {
+            UpdateDSL<UpdateModel> updateModelUpdateDSL = updateAllColumns(record, modelUpdateDSL);
+            updateModelUpdateDSL.where(id, isEqualToWhenPresent(eqWhere::getId));
+            return updateModelUpdateDSL;
+        });
+    }
+
+    default int updateSelective(XxlJobLog record, XxlJobLog eqWhere) {
+        return update(modelUpdateDSL -> {
+            UpdateDSL<UpdateModel> updateModelUpdateDSL = updateSelectiveColumns(record, modelUpdateDSL);
+            updateModelUpdateDSL.where(id, isEqualToWhenPresent(eqWhere::getId));
+            return updateModelUpdateDSL;
+        });
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")

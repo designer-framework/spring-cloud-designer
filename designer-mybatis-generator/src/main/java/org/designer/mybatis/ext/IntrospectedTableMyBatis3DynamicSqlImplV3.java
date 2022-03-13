@@ -4,7 +4,9 @@ import org.designer.mybatis.generator.DynamicSqlMapperGeneratorV3;
 import org.designer.mybatis.generator.ServiceGenerator;
 import org.designer.mybatis.generator.ServiceImplGenerator;
 import org.designer.mybatis.utils.MybatisUtils;
+import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.ProgressCallback;
+import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.codegen.AbstractJavaClientGenerator;
 import org.mybatis.generator.codegen.AbstractJavaGenerator;
 import org.mybatis.generator.codegen.mybatis3.xmlmapper.XMLMapperGenerator;
@@ -79,6 +81,15 @@ public class IntrospectedTableMyBatis3DynamicSqlImplV3 extends IntrospectedTable
         super.calculateGenerators(warnings, progressCallback);
         calculateServiceGenerator(warnings, progressCallback);
         calculateServiceImplGenerator(warnings, progressCallback);
+    }
+
+    @Override
+    public void setPrimaryKeyType(String primaryKeyType) {
+        List<IntrospectedColumn> primaryKeyColumns = getPrimaryKeyColumns();
+        primaryKeyColumns.forEach(introspectedColumn -> {
+            FullyQualifiedJavaType fullyQualifiedJavaType = introspectedColumn.getFullyQualifiedJavaType();
+            super.setPrimaryKeyType(fullyQualifiedJavaType.getFullyQualifiedName());
+        });
     }
 
     @Override

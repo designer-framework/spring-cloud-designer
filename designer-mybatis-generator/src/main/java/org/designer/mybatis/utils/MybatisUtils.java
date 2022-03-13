@@ -16,6 +16,10 @@ public class MybatisUtils {
         return new FullyQualifiedJavaType(className).getShortName();
     }
 
+    public static FullyQualifiedJavaType shortFullyQualifiedJavaType(String className) {
+        return new FullyQualifiedJavaType(shortName(className));
+    }
+
     public static String getFormatProperty(Context context, String key, String... defaultVal) {
         if (defaultVal != null && defaultVal.length > 0) {
             return String.format(getProperties(context, key, defaultVal[0]), getProperties(context).getProperty("modelName"));
