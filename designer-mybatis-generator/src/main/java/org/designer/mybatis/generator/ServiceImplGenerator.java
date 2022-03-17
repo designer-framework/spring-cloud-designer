@@ -22,8 +22,6 @@ public class ServiceImplGenerator extends AbstractJavaGenerator {
 
     public static final String ATTR_SERVICE_IMPL_TYPE = "ATTR_SERVICE_IMPL_TYPE";
 
-    private static final String ATTR_BASE_SERVICE_IMPL_VALUE = "org.designer.mybatis.base.service.impl.IServiceImpl";
-
     public ServiceImplGenerator(String project) {
         super(project);
     }
@@ -40,14 +38,14 @@ public class ServiceImplGenerator extends AbstractJavaGenerator {
         topLevelClass.addImportedType(introspectedTable.getBaseRecordType());
         topLevelClass.addImportedType(getServiceName());
         //继承通用类
-        FullyQualifiedJavaType baseServiceImplInterface = new FullyQualifiedJavaType(MybatisUtils.shortName(ATTR_BASE_SERVICE_IMPL_VALUE));
+        FullyQualifiedJavaType baseServiceImplInterface = new FullyQualifiedJavaType(MybatisUtils.shortName(getBaseServiceImpl()));
         baseServiceImplInterface.addTypeArgument(MybatisUtils.shortFullyQualifiedJavaType(introspectedTable.getPrimaryKeyType()));
         baseServiceImplInterface.addTypeArgument(MybatisUtils.shortFullyQualifiedJavaType(introspectedTable.getBaseRecordType()));
         baseServiceImplInterface.addTypeArgument(MybatisUtils.shortFullyQualifiedJavaType(introspectedTable.getMyBatis3JavaMapperType()));
         topLevelClass.setSuperClass(baseServiceImplInterface);
         topLevelClass.addImportedType(introspectedTable.getPrimaryKeyType());
         topLevelClass.addImportedType(introspectedTable.getMyBatis3JavaMapperType());
-        topLevelClass.addImportedType(ATTR_BASE_SERVICE_IMPL_VALUE);
+        topLevelClass.addImportedType(getBaseServiceImpl());
 
         //Service类
         topLevelClass.addAnnotation("@Service");
@@ -57,7 +55,7 @@ public class ServiceImplGenerator extends AbstractJavaGenerator {
         //
         List<CompilationUnit> answer = new ArrayList<>();
         answer.add(topLevelClass);
-        introspectedTable.setAttribute(ATTR_SERVICE_IMPL_TYPE, ATTR_BASE_SERVICE_IMPL_VALUE);
+        introspectedTable.setAttribute(ATTR_SERVICE_IMPL_TYPE, getBaseServiceImpl());
         return answer;
     }
 
@@ -71,6 +69,11 @@ public class ServiceImplGenerator extends AbstractJavaGenerator {
 
     private String getShortServiceName() {
         return new FullyQualifiedJavaType(getServiceName()).getShortName();
+    }
+
+
+    protected String getBaseServiceImpl() {
+        return MybatisUtils.getFormatProperty(context, "serviceImplSuperClass");
     }
 
     private String getServiceName() {

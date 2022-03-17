@@ -23,8 +23,6 @@ public class ServiceGenerator extends AbstractJavaGenerator {
 
     private static final String ATTR_BASE_SERVICE_TYPE = "ATTR_BASE_SERVICE_TYPE";
 
-    private static final String ATTR_BASE_SERVICE_VALUE = IService.class.getName();
-
     public ServiceGenerator(String project) {
         super(project);
     }
@@ -42,7 +40,7 @@ public class ServiceGenerator extends AbstractJavaGenerator {
         serviceInterface.setVisibility(JavaVisibility.PUBLIC);
         //继承基础Service并导入Service包
         FullyQualifiedJavaType fullyQualifiedJavaType = new FullyQualifiedJavaType(getShortBaseServiceClassName());
-        serviceInterface.addImportedType(new FullyQualifiedJavaType(ATTR_BASE_SERVICE_VALUE));
+        serviceInterface.addImportedType(new FullyQualifiedJavaType(getBaseService()));
         //指定继承类的泛型
         fullyQualifiedJavaType.addTypeArgument(MybatisUtils.shortFullyQualifiedJavaType(introspectedTable.getPrimaryKeyType()));
         fullyQualifiedJavaType.addTypeArgument(MybatisUtils.shortFullyQualifiedJavaType(introspectedTable.getBaseRecordType()));
@@ -55,9 +53,13 @@ public class ServiceGenerator extends AbstractJavaGenerator {
         //
         List<CompilationUnit> answer = new ArrayList<>();
         answer.add(serviceInterface);
-        introspectedTable.setAttribute(ATTR_BASE_SERVICE_TYPE, ATTR_BASE_SERVICE_VALUE);
+        introspectedTable.setAttribute(ATTR_BASE_SERVICE_TYPE, getBaseService());
         introspectedTable.setAttribute(ATTR_SERVICE_TYPE, getService());
         return answer;
+    }
+
+    protected String getBaseService() {
+        return MybatisUtils.getFormatProperty(context, "serviceSuperClass");
     }
 
     protected String getService() {
@@ -69,7 +71,7 @@ public class ServiceGenerator extends AbstractJavaGenerator {
     }
 
     private String getShortBaseServiceClassName() {
-        return MybatisUtils.shortName(ATTR_BASE_SERVICE_VALUE);
+        return MybatisUtils.shortName(getBaseService());
     }
 
 

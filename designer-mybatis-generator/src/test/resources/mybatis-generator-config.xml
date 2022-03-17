@@ -5,41 +5,27 @@
 <!-- 配置生成器 -->
 <generatorConfiguration>
 
-    <context id="mysql" defaultModelType="flat"
+    <properties resource="project.properties"/>
+
+    <context id="tableBuilder" defaultModelType="flat"
              targetRuntime="org.designer.mybatis.ext.IntrospectedTableMyBatis3DynamicSqlImplV3"
              introspectedColumnImpl="org.mybatis.generator.api.IntrospectedColumn">
 
-        <!-- 模块名 -->
-        <property name="modelName" value="student"/>
+        <property name="modelName" value="${modelName}"/>
+        <property name="tableName" value="${tableName}"/>
+        <property name="modelSuperClass" value="${modelSuperClass}"/>
 
-        <!-- 实体类 父类路径 -->
-        <property name="modelSuperClass" value="org.designer.mybatis.base.entity.BaseEntity"/>
+        <property name="serviceProject" value="${serviceProject}"/>
+        <property name="javaServicePackage" value="${javaServicePackage}"/>
 
-        <!-- 实体类 项目路径 -->
-        <property name="modelProject" value="designer-mybatis-generator/src/test/java"/>
-        <!-- 实体类 包路径 -->
-        <property name="javaModelPackage" value="org.designer.%s.model"/>
+        <property name="serviceImplProject" value="${serviceImplProject}"/>
+        <property name="javaServiceImplPackage" value="${javaServiceImplPackage}"/>
 
-        <!-- Service 项目路径 -->
-        <property name="serviceProject" value="designer-mybatis-generator/src/test/java"/>
-        <!-- Service 包路径 -->
-        <property name="javaServicePackage" value="org.designer.%s.service"/>
+        <property name="serviceSuperClass" value="org.designer.mybatis.base.service.IService"/>
+        <property name="serviceImplSuperClass" value="org.designer.mybatis.base.service.impl.IServiceImpl"/>
 
-        <!-- ServiceImpl 项目路径 -->
-        <property name="serviceImplProject" value="designer-mybatis-generator/src/test/java"/>
-        <!-- ServiceImpl 包路径 -->
-        <property name="javaServiceImplPackage" value="org.designer.%s.service.impl"/>
-
-        <property name="clientProject" value="designer-mybatis-generator/src/test/java"/>
-        <property name="javaClientPackage" value="org.designer.%s.mapper"/>
-
-        <!-- XML的Interface路径 -->
-        <property name="javaMapperProject" value="designer-mybatis-generator/src/test/java"/>
-        <!-- XML的Resource路径 -->
-        <property name="xmlMapperPackage" value="mapper.%s"/>
-
-        <!-- 暂时没用 -->
-        <property name="sqlMapPackage" value="mybatis.%s"/>
+        <!--xml生成存放的位置-->
+        <property name="sqlMapPackage" value="${javaModelPackage}"/>
 
         <property name="javaFileEncoding" value="UTF-8"/>
         <property name="javaFormatter" value="org.mybatis.generator.api.dom.DefaultJavaFormatter"/>
@@ -68,28 +54,28 @@
             <property name="useJSR310Types" value="false"/>
         </javaTypeResolver>
 
-        <javaModelGenerator targetPackage="org.designer.mybatis.model"
-                            targetProject="designer-mybatis-generator/src/test/java">
+        <javaModelGenerator targetPackage="${javaModelPackage}"
+                            targetProject="${modelProject}">
             <property name="constructorBased" value="false"/>
             <property name="enableSubPackages" value="true"/>
             <property name="immutable" value="false"/>
-            <property name="rootClass" value="org.designer.mybatis.base.entity.BaseEntity"/>
+            <property name="rootClass" value="${modelSuperClass}"/>
             <property name="trimStrings" value="false"/>
         </javaModelGenerator>
 
         <!--xml-->
-        <sqlMapGenerator targetPackage="org.designer.mybatis"
-                         targetProject="designer-mybatis-generator/src/test/resources">
+        <sqlMapGenerator targetPackage="${sqlMapPackage}"
+                         targetProject="${sqlMapProject}">
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
 
-        <javaClientGenerator targetPackage="org.designer.mybatis.mapper"
-                             targetProject="designer-mybatis-generator/src/test/java"
+        <javaClientGenerator targetPackage="${javaClientPackage}"
+                             targetProject="${clientProject}"
                              type="">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <table tableName="xxl_job_log">
+        <table tableName="${tableName}">
             <property name="constructorBased" value="false"/>
             <property name="ignoreQualifiersAtRuntime" value="false"/>
             <property name="immutable" value="false"/>
