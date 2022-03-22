@@ -5,6 +5,7 @@ import org.mybatis.dynamic.sql.delete.DeleteDSLCompleter;
 import org.mybatis.dynamic.sql.select.CountDSLCompleter;
 import org.mybatis.dynamic.sql.select.SelectDSLCompleter;
 import org.mybatis.dynamic.sql.update.UpdateDSLCompleter;
+import org.mybatis.dynamic.sql.where.WhereApplier;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
@@ -22,12 +23,17 @@ public interface IService<I extends Serializable, T> {
     BaseMapper<I, T> getBaseMapper();
 
     @Transactional(rollbackFor = Exception.class)
-    default int deleteById(I id_) {
+    default int removeById(I id_) {
         return getBaseMapper().deleteByPrimaryKey(id_);
     }
 
     @Transactional(rollbackFor = Exception.class)
-    int delete(DeleteDSLCompleter completer);
+    int remove(DeleteDSLCompleter completer);
+
+    @Transactional(rollbackFor = Exception.class)
+    default int removeBatchIds(Collection<I> ids) {
+        return getBaseMapper().deleteBatchByPrimaryKeys(ids);
+    }
 
     @Transactional(rollbackFor = Exception.class)
     default int save(T record) {
@@ -48,9 +54,31 @@ public interface IService<I extends Serializable, T> {
         return getBaseMapper().selectByPrimaryKey(id_);
     }
 
+    default List<T> listByIds(Collection<I> idList) {
+        return this.getBaseMapper().selectBatchPrimaryKeys(idList);
+    }
+
     @Transactional(rollbackFor = Exception.class)
     default int updateById(T record) {
         return getBaseMapper().updateByPrimaryKey(record);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    default int update(T record, WhereApplier whereApplier) {
+        return getBaseMapper().update(c ->
+                getBaseMapper()
+                        .updateAllColumns(record, c)
+                        .applyWhere(whereApplier)
+        );
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    default int updateSelective(T record, WhereApplier whereApplier) {
+        return getBaseMapper().update(c ->
+                getBaseMapper()
+                        .updateSelectiveColumns(record, c)
+                        .applyWhere(whereApplier)
+        );
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -76,8 +104,5 @@ public interface IService<I extends Serializable, T> {
      */
     @Transactional(rollbackFor = Exception.class)
     int update(UpdateDSLCompleter completer);
-
-    @Transactional(rollbackFor = Exception.class)
-    int update(T record, T eqWhere);
 
 }

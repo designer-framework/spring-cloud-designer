@@ -6,6 +6,7 @@ import org.mybatis.dynamic.sql.delete.DeleteDSLCompleter;
 import org.mybatis.dynamic.sql.select.CountDSLCompleter;
 import org.mybatis.dynamic.sql.select.SelectDSLCompleter;
 import org.mybatis.dynamic.sql.update.UpdateDSLCompleter;
+import org.mybatis.dynamic.sql.where.WhereApplier;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
@@ -47,12 +48,7 @@ public class IServiceImpl<I extends Serializable, E, M extends BaseMapper<I, E>>
     }
 
     @Override
-    public int update(E record, E eqWhere) {
-        return baseMapper.update(record, eqWhere);
-    }
-
-    @Override
-    public int delete(DeleteDSLCompleter completer) {
+    public int remove(DeleteDSLCompleter completer) {
         return baseMapper.delete(completer);
     }
 

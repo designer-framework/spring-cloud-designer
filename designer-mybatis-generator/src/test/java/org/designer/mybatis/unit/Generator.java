@@ -8,6 +8,10 @@ import org.mybatis.generator.config.xml.ConfigurationParser;
 import org.mybatis.generator.internal.DefaultShellCallback;
 
 import java.io.InputStream;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +21,7 @@ import java.util.List;
  * @date : 2022/3/6 20:05
  */
 public class Generator {
+
 
     public static void main(String[] args) throws Exception {
         List<String> warnings = new ArrayList<>();

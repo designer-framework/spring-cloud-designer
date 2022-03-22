@@ -132,6 +132,11 @@ public class IntrospectedTableMyBatis3DynamicSqlImplV3 extends IntrospectedTable
         return getFormatProperty("serviceImplProject", super.getClientProject());
     }
 
+    @Override
+    public String getSelectByPrimaryKeyStatementId() {
+        return super.getSelectByPrimaryKeyStatementId();
+    }
+
     protected String getFormatProperty(String key, String... defaultVal) {
         return MybatisUtils.getFormatProperty(context, key, defaultVal);
     }

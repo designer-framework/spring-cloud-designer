@@ -1,6 +1,10 @@
 package org.designer.cache.test.config;
 
 import org.designer.cache.test.entity.Obj;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.support.BeanDefinitionBuilder;
+import org.springframework.beans.factory.support.BeanDefinitionReader;
+import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.boot.autoconfigure.cache.RedisCacheManagerBuilderCustomizer;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
@@ -29,6 +33,7 @@ public class CacheConfig {
     //@Bean
     RedisCacheManagerBuilderCustomizer redisCacheManagerBuilderCustomizer(
             RedisConnectionFactory connectionFactory
+            , BeanDefinitionRegistry beanDefinitionRegistry
     ) {
         return new RedisCacheManagerBuilderCustomizer() {
             @Override

@@ -1,28 +1,10 @@
 package org.designer.mybatis.unit;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.designer.mybatis.SimpleTestApplication;
-import org.designer.student.mapper.XxlJobLogDynamicSqlSupport;
-import org.designer.student.model.XxlJobLog;
-import org.designer.student.service.XxlJobLogService;
-import org.junit.Assert;
-import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Random;
-
-import static org.designer.student.mapper.XxlJobLogDynamicSqlSupport.id;
-import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
-import static org.mybatis.dynamic.sql.SqlBuilder.isNotNull;
 
 /**
  * @description:
@@ -33,12 +15,25 @@ import static org.mybatis.dynamic.sql.SqlBuilder.isNotNull;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = SimpleTestApplication.class)
 public class TestApplication {
+/*
 
     @Autowired
     private XxlJobLogService xxlJobLogService;
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Test
+    public void testenhance() throws InstantiationException, IllegalAccessException {
+        TestApplication testApplication = new TestApplication();
+        Enhancer enhancer = new Enhancer();
+        enhancer.setSuperclass(testApplication.getClass());
+        enhancer.setInterfaces(testApplication.getClass().getInterfaces());
+        enhancer.setCallbackType(MethodInterceptor.class);
+        Class classForProxy = enhancer.createClass();
+        Object o = classForProxy.newInstance();
+        o.toString();
+    }
 
     @Test
     @Transactional(rollbackFor = Exception.class)
@@ -97,7 +92,7 @@ public class TestApplication {
         saveSelective.setHandleMsg("updateById 更新后");
         int updateCount = xxlJobLogService.updateById(saveSelective);
         Assert.assertEquals("T-通过ID更新失败", 1, updateCount);
-        Assert.assertEquals("T-通过ID更新失败", (count + updateCount), countData());
+        //Assert.assertEquals("T-通过ID更新失败", (count + updateCount), countData());
         log.warn("T-更新的数据: {}", objectMapper.writeValueAsString(xxlJobLogService.getById(saveSelective.getId())));
         log.warn("T-通过ID更新-结束");
 
@@ -107,10 +102,22 @@ public class TestApplication {
         saveSelective.setHandleMsg("updateByIdSelective 更新后");
         int updateSelectiveCount = xxlJobLogService.updateByIdSelective(reset(saveSelective));
         Assert.assertEquals("T-通过ID更新不为空的字段失败", 1, updateSelectiveCount);
-        Assert.assertEquals("T-通过ID更新不为空的字段失败", (count + updateSelectiveCount), countData());
         log.warn("T-更新后的数据: {}", objectMapper.writeValueAsString(xxlJobLogService.getById(saveSelective.getId())));
         log.warn("T-通过ID更新不为空的字段-结束");
 
+
+        log.warn("T-通过Where更新不为空的字段-开始");
+        count = countData();
+        saveSelective.setHandleMsg("updateByIdSelective 更新后");
+        int updateSelective = xxlJobLogService.updateSelective(reset(saveSelective), abstractWhereDSL -> {
+            abstractWhereDSL.and(jobId, isEqualToWhenPresent(100));
+        });
+        int updateAll = xxlJobLogService.update(reset(saveSelective), abstractWhereDSL -> {
+            abstractWhereDSL.and(jobId, isEqualToWhenPresent(100));
+        });
+        Assert.assertEquals("T-通过ID更新不为空的字段失败", 1, updateSelectiveCount);
+        log.warn("T-更新后的数据: {}", objectMapper.writeValueAsString(xxlJobLogService.getById(saveSelective.getId())));
+        log.warn("T-通过Where更新不为空的字段-结束");
     }
 
     public XxlJobLog reset(XxlJobLog xxlJobLog1) {
@@ -146,5 +153,6 @@ public class TestApplication {
         xxlJobLog.setHandleMsg("m2");
         return xxlJobLog;
     }
+*/
 
 }

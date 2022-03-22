@@ -35,6 +35,7 @@
 
         <plugin type="org.designer.mybatis.plugins.model.SwaggerAnnotationPlugin"/>
         <plugin type="org.designer.mybatis.plugins.mapper.BaseMapperPlugin"/>
+        <plugin type="org.designer.mybatis.plugins.mapper.BaseMapperMethodPlugin"/>
 
         <commentGenerator type="org.mybatis.generator.internal.DefaultCommentGenerator">
             <property name="suppressAllComments" value="true"/>

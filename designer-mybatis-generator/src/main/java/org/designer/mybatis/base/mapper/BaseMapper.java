@@ -3,7 +3,9 @@ package org.designer.mybatis.base.mapper;
 import org.mybatis.dynamic.sql.delete.DeleteDSLCompleter;
 import org.mybatis.dynamic.sql.select.CountDSLCompleter;
 import org.mybatis.dynamic.sql.select.SelectDSLCompleter;
+import org.mybatis.dynamic.sql.update.UpdateDSL;
 import org.mybatis.dynamic.sql.update.UpdateDSLCompleter;
+import org.mybatis.dynamic.sql.update.UpdateModel;
 import org.mybatis.dynamic.sql.util.mybatis3.*;
 
 import java.io.Serializable;
@@ -25,6 +27,8 @@ public interface BaseMapper<I extends Serializable, T> extends CommonCountMapper
 
     int deleteByPrimaryKey(I id_);
 
+    int deleteBatchByPrimaryKeys(Collection<I> ids_);
+
     int insert(T record);
 
     int insertMultiple(Collection<T> records);
@@ -39,19 +43,13 @@ public interface BaseMapper<I extends Serializable, T> extends CommonCountMapper
 
     Optional<T> selectByPrimaryKey(I id_);
 
+    List<T> selectBatchPrimaryKeys(Collection<I> ids);
+
     int update(UpdateDSLCompleter completer);
 
-    /**
-     * 不建议使用, 可能会导致全表更新
-     *
-     * @param record
-     * @param eqWhere
-     * @return
-     */
-    @Deprecated
-    int updateSelective(T record, T eqWhere);
+    UpdateDSL<UpdateModel> updateAllColumns(T record, UpdateDSL<UpdateModel> dsl);
 
-    int update(T record, T eqWhere);
+    UpdateDSL<UpdateModel> updateSelectiveColumns(T record, UpdateDSL<UpdateModel> dsl);
 
     int updateByPrimaryKey(T record);
 
