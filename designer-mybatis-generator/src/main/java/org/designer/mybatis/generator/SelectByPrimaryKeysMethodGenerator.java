@@ -74,7 +74,7 @@ public class SelectByPrimaryKeysMethodGenerator extends AbstractMethodGenerator 
             String fieldName = AbstractMethodGenerator.calculateFieldName(tableFieldName, column);
 
             if (first) {
-                builder.withBodyLine("    org.mybatis.dynamic.sql.SqlBuilder.select(" + tableFieldName + ".allColumns())");
+                builder.withBodyLine("    org.mybatis.dynamic.sql.SqlBuilder.select(selectList)");
                 builder.withBodyLine("        .from(" + tableFieldName + ")");
                 builder.withBodyLine("        .where(" + fieldName
                         + ", isIn(" + column.getJavaProperty()

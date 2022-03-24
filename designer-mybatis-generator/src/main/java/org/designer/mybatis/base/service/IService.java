@@ -55,7 +55,7 @@ public interface IService<I extends Serializable, T> {
     }
 
     default List<T> listByIds(Collection<I> idList) {
-        return this.getBaseMapper().selectBatchPrimaryKeys(idList);
+        return getBaseMapper().selectBatchPrimaryKeys(idList);
     }
 
     @Transactional(rollbackFor = Exception.class)

@@ -200,7 +200,7 @@ public interface XxlJobLogMapper extends BaseMapper<Long, XxlJobLog> {
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
     default List<XxlJobLog> selectBatchPrimaryKeys(Collection<Long> ids) {
         return selectMany(
-            org.mybatis.dynamic.sql.SqlBuilder.select(xxlJobLog.allColumns())
+            org.mybatis.dynamic.sql.SqlBuilder.select(selectList)
                 .from(xxlJobLog)
                 .where(id, isIn(ids))
                 .build()
