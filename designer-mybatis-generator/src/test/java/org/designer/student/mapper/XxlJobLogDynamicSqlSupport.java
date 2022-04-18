@@ -50,6 +50,9 @@ public final class XxlJobLogDynamicSqlSupport {
     public static final SqlColumn<Byte> alarmStatus = xxlJobLog.alarmStatus;
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
+    public static final SqlColumn<String> uuid = xxlJobLog.uuid;
+
+    @Generated("org.mybatis.generator.api.MyBatisGenerator")
     public static final SqlColumn<String> triggerMsg = xxlJobLog.triggerMsg;
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
@@ -82,6 +85,8 @@ public final class XxlJobLogDynamicSqlSupport {
         public final SqlColumn<Integer> handleCode = column("handle_code", JDBCType.INTEGER);
 
         public final SqlColumn<Byte> alarmStatus = column("alarm_status", JDBCType.TINYINT);
+
+        public final SqlColumn<String> uuid = column("uuid", JDBCType.VARCHAR);
 
         public final SqlColumn<String> triggerMsg = column("trigger_msg", JDBCType.LONGVARCHAR);
 

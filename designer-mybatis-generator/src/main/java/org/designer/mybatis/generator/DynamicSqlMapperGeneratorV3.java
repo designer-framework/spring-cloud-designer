@@ -21,10 +21,23 @@ public class DynamicSqlMapperGeneratorV3 extends DynamicSqlMapperGeneratorV2 {
         super.addSelectByPrimaryKeyMethod(interfaze);
 
         addSelectByPrimaryKeysMethod(interfaze);
+        addSelectByUUIDMethod(interfaze);
     }
 
     protected void addSelectByPrimaryKeysMethod(Interface interfaze) {
         SelectByPrimaryKeysMethodGenerator generator = new SelectByPrimaryKeysMethodGenerator.Builder()
+                .withContext(context)
+                .withFragmentGenerator(fragmentGenerator)
+                .withIntrospectedTable(introspectedTable)
+                .withTableFieldName(tableFieldName)
+                .withRecordType(recordType)
+                .build();
+
+        generate(interfaze, generator);
+    }
+
+    protected void addSelectByUUIDMethod(Interface interfaze) {
+        SelectByUUIDMethodGenerator generator = new SelectByUUIDMethodGenerator.Builder()
                 .withContext(context)
                 .withFragmentGenerator(fragmentGenerator)
                 .withIntrospectedTable(introspectedTable)

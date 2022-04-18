@@ -11,6 +11,7 @@ import org.mybatis.generator.runtime.dynamic.sql.elements.MethodAndImports;
 import org.mybatis.generator.runtime.dynamic.sql.elements.MethodParts;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -18,76 +19,79 @@ import java.util.Set;
  * @author: Designer
  * @date : 2022/3/22 1:25
  */
-public class SelectByPrimaryKeysMethodGenerator extends AbstractMethodGenerator {
+public class SelectByUUIDMethodGenerator extends AbstractMethodGenerator {
 
     private FullyQualifiedJavaType recordType;
     private FragmentGenerator fragmentGenerator;
 
-    private SelectByPrimaryKeysMethodGenerator(SelectByPrimaryKeysMethodGenerator.Builder builder) {
+    private SelectByUUIDMethodGenerator(SelectByUUIDMethodGenerator.Builder builder) {
         super(builder);
         recordType = builder.recordType;
         fragmentGenerator = builder.fragmentGenerator;
     }
 
-    protected SelectByPrimaryKeysMethodGenerator(BaseBuilder<?, ?> builder) {
+    protected SelectByUUIDMethodGenerator(BaseBuilder<?, ?> builder) {
         super(builder);
     }
 
     @Override
     public MethodAndImports generateMethodAndImports() {
+        Optional<IntrospectedColumn> uuid = introspectedTable.getColumn("uuid");
+        if (!uuid.isPresent()) {
+            return null;
+        }
+
         Set<FullyQualifiedJavaType> imports = new HashSet<>();
 
-        FullyQualifiedJavaType returnType = new FullyQualifiedJavaType("java.util.List");
+        FullyQualifiedJavaType returnType = new FullyQualifiedJavaType("java.util.Optional");
         returnType.addTypeArgument(recordType);
         imports.add(returnType);
 
-        Method method = new Method("selectBatchPrimaryKeys");
+        Method method = new Method("selectByUUID");
         method.setDefault(true);
         context.getCommentGenerator().addGeneralMethodAnnotation(method, introspectedTable, imports);
         method.setReturnType(returnType);
 
-        method.addBodyLine("return selectMany(");
+        method.addBodyLine("return selectOne(c ->");
 
         MethodAndImports.Builder builder = MethodAndImports.withMethod(method)
                 .withStaticImport("org.mybatis.dynamic.sql.SqlBuilder.*")
                 .withImports(imports);
 
-        acceptParts(builder, method, getPrimaryKeysWhereClauseAndParametersV2());
+        acceptParts(builder, method, getUUIDWhereClauseAndParametersV2(uuid.get()));
 
         return builder.build();
     }
 
-    public MethodParts getPrimaryKeysWhereClauseAndParametersV2() {
+    @Override
+    protected void acceptParts(MethodAndImports.Builder builder, Method method, MethodParts methodParts) {
+        super.acceptParts(builder, method, methodParts);
+    }
+
+    @Override
+    protected String calculateFieldName(IntrospectedColumn column) {
+        return super.calculateFieldName(column);
+    }
+
+    public MethodParts getUUIDWhereClauseAndParametersV2(IntrospectedColumn column) {
         MethodParts.Builder builder = new MethodParts.Builder();
 
         boolean first = true;
-        for (IntrospectedColumn column : introspectedTable.getPrimaryKeyColumns()) {
-            builder.withImport(column.getFullyQualifiedJavaType());
-            builder.withImport(new FullyQualifiedJavaType("org.mybatis.dynamic.sql.render.RenderingStrategies"));
-
-            FullyQualifiedJavaType listParameter = new FullyQualifiedJavaType("java.util.Collection");
-            listParameter.addTypeArgument(column.getFullyQualifiedJavaType());
-
-            builder.withParameter(new Parameter(listParameter, column.getJavaProperty() + "s"));
-
-            String fieldName = AbstractMethodGenerator.calculateFieldName(tableFieldName, column);
-
-            if (first) {
-                builder.withBodyLine("    org.mybatis.dynamic.sql.SqlBuilder.select(selectList)");
-                builder.withBodyLine("        .from(" + tableFieldName + ")");
-                builder.withBodyLine("        .where(" + fieldName
-                        + ", isIn(" + column.getJavaProperty()
-                        + "s))");
-                first = false;
-            } else {
-                builder.withBodyLine("    .or(" + fieldName
-                        + ", isIn(" + column.getJavaProperty()
-                        + "s_))");
-            }
+        String fieldName = AbstractMethodGenerator.calculateFieldName(tableFieldName, column);
+        builder.withImport(column.getFullyQualifiedJavaType());
+        builder.withParameter(new Parameter(
+                column.getFullyQualifiedJavaType(), column.getJavaProperty() + "_")); //$NON-NLS-1$
+        if (first) {
+            builder.withBodyLine("    c.where(" + fieldName //$NON-NLS-1$
+                    + ", isEqualTo(" + column.getJavaProperty() //$NON-NLS-1$
+                    + "_))"); //$NON-NLS-1$
+            first = false;
+        } else {
+            builder.withBodyLine("    .and(" + fieldName //$NON-NLS-1$
+                    + ", isEqualTo(" + column.getJavaProperty() //$NON-NLS-1$
+                    + "_))"); //$NON-NLS-1$
         }
-        builder.withBodyLine("        .build()");
-        builder.withBodyLine("        .render(RenderingStrategies.MYBATIS3)");
-        builder.withBodyLine(");");
+        builder.withBodyLine(");"); //$NON-NLS-1$
 
         return builder.build();
     }
@@ -97,7 +101,7 @@ public class SelectByPrimaryKeysMethodGenerator extends AbstractMethodGenerator 
         return context.getPlugins().clientSelectByPrimaryKeyMethodGenerated(method, interfaze, introspectedTable);
     }
 
-    public static class Builder extends BaseBuilder<SelectByPrimaryKeysMethodGenerator.Builder, SelectByPrimaryKeysMethodGenerator> {
+    public static class Builder extends BaseBuilder<SelectByUUIDMethodGenerator.Builder, SelectByUUIDMethodGenerator> {
 
         private FullyQualifiedJavaType recordType;
         private FragmentGenerator fragmentGenerator;
@@ -113,13 +117,13 @@ public class SelectByPrimaryKeysMethodGenerator extends AbstractMethodGenerator 
         }
 
         @Override
-        public SelectByPrimaryKeysMethodGenerator.Builder getThis() {
+        public SelectByUUIDMethodGenerator.Builder getThis() {
             return this;
         }
 
         @Override
-        public SelectByPrimaryKeysMethodGenerator build() {
-            return new SelectByPrimaryKeysMethodGenerator(this);
+        public SelectByUUIDMethodGenerator build() {
+            return new SelectByUUIDMethodGenerator(this);
         }
 
     }

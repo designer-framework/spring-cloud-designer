@@ -37,7 +37,7 @@ import org.mybatis.dynamic.sql.util.mybatis3.MyBatis3Utils;
 @Mapper
 public interface XxlJobLogMapper extends BaseMapper<Long, XxlJobLog> {
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    BasicColumn[] selectList = BasicColumn.columnList(id, jobGroup, jobId, executorAddress, executorHandler, executorParam, executorShardingParam, executorFailRetryCount, triggerTime, triggerCode, handleTime, handleCode, alarmStatus, triggerMsg, handleMsg);
+    BasicColumn[] selectList = BasicColumn.columnList(id, jobGroup, jobId, executorAddress, executorHandler, executorParam, executorShardingParam, executorFailRetryCount, triggerTime, triggerCode, handleTime, handleCode, alarmStatus, uuid, triggerMsg, handleMsg);
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
     @SelectProvider(type=SqlProviderAdapter.class, method="select")
@@ -76,6 +76,7 @@ public interface XxlJobLogMapper extends BaseMapper<Long, XxlJobLog> {
         @Result(column="handle_time", property="handleTime", jdbcType=JdbcType.TIMESTAMP),
         @Result(column="handle_code", property="handleCode", jdbcType=JdbcType.INTEGER),
         @Result(column="alarm_status", property="alarmStatus", jdbcType=JdbcType.TINYINT),
+        @Result(column="uuid", property="uuid", jdbcType=JdbcType.VARCHAR),
         @Result(column="trigger_msg", property="triggerMsg", jdbcType=JdbcType.LONGVARCHAR),
         @Result(column="handle_msg", property="handleMsg", jdbcType=JdbcType.LONGVARCHAR)
     })
@@ -128,6 +129,7 @@ public interface XxlJobLogMapper extends BaseMapper<Long, XxlJobLog> {
             .map(handleTime).toProperty("handleTime")
             .map(handleCode).toProperty("handleCode")
             .map(alarmStatus).toProperty("alarmStatus")
+            .map(uuid).toProperty("uuid")
             .map(triggerMsg).toProperty("triggerMsg")
             .map(handleMsg).toProperty("handleMsg")
         );
@@ -149,6 +151,7 @@ public interface XxlJobLogMapper extends BaseMapper<Long, XxlJobLog> {
             .map(handleTime).toProperty("handleTime")
             .map(handleCode).toProperty("handleCode")
             .map(alarmStatus).toProperty("alarmStatus")
+            .map(uuid).toProperty("uuid")
             .map(triggerMsg).toProperty("triggerMsg")
             .map(handleMsg).toProperty("handleMsg")
         );
@@ -170,6 +173,7 @@ public interface XxlJobLogMapper extends BaseMapper<Long, XxlJobLog> {
             .map(handleTime).toPropertyWhenPresent("handleTime", record::getHandleTime)
             .map(handleCode).toPropertyWhenPresent("handleCode", record::getHandleCode)
             .map(alarmStatus).toPropertyWhenPresent("alarmStatus", record::getAlarmStatus)
+            .map(uuid).toPropertyWhenPresent("uuid", record::getUuid)
             .map(triggerMsg).toPropertyWhenPresent("triggerMsg", record::getTriggerMsg)
             .map(handleMsg).toPropertyWhenPresent("handleMsg", record::getHandleMsg)
         );
@@ -209,6 +213,13 @@ public interface XxlJobLogMapper extends BaseMapper<Long, XxlJobLog> {
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
+    default Optional<XxlJobLog> selectByUUID(String uuid_) {
+        return selectOne(c ->
+            c.where(uuid, isEqualTo(uuid_))
+        );
+    }
+
+    @Generated("org.mybatis.generator.api.MyBatisGenerator")
     default int update(UpdateDSLCompleter completer) {
         return MyBatis3Utils.update(this::update, xxlJobLog, completer);
     }
@@ -228,6 +239,7 @@ public interface XxlJobLogMapper extends BaseMapper<Long, XxlJobLog> {
                 .set(handleTime).equalTo(record::getHandleTime)
                 .set(handleCode).equalTo(record::getHandleCode)
                 .set(alarmStatus).equalTo(record::getAlarmStatus)
+                .set(uuid).equalTo(record::getUuid)
                 .set(triggerMsg).equalTo(record::getTriggerMsg)
                 .set(handleMsg).equalTo(record::getHandleMsg);
     }
@@ -247,6 +259,7 @@ public interface XxlJobLogMapper extends BaseMapper<Long, XxlJobLog> {
                 .set(handleTime).equalToWhenPresent(record::getHandleTime)
                 .set(handleCode).equalToWhenPresent(record::getHandleCode)
                 .set(alarmStatus).equalToWhenPresent(record::getAlarmStatus)
+                .set(uuid).equalToWhenPresent(record::getUuid)
                 .set(triggerMsg).equalToWhenPresent(record::getTriggerMsg)
                 .set(handleMsg).equalToWhenPresent(record::getHandleMsg);
     }
@@ -266,6 +279,7 @@ public interface XxlJobLogMapper extends BaseMapper<Long, XxlJobLog> {
             .set(handleTime).equalTo(record::getHandleTime)
             .set(handleCode).equalTo(record::getHandleCode)
             .set(alarmStatus).equalTo(record::getAlarmStatus)
+            .set(uuid).equalTo(record::getUuid)
             .set(triggerMsg).equalTo(record::getTriggerMsg)
             .set(handleMsg).equalTo(record::getHandleMsg)
             .where(id, isEqualTo(record::getId))
@@ -287,6 +301,7 @@ public interface XxlJobLogMapper extends BaseMapper<Long, XxlJobLog> {
             .set(handleTime).equalToWhenPresent(record::getHandleTime)
             .set(handleCode).equalToWhenPresent(record::getHandleCode)
             .set(alarmStatus).equalToWhenPresent(record::getAlarmStatus)
+            .set(uuid).equalToWhenPresent(record::getUuid)
             .set(triggerMsg).equalToWhenPresent(record::getTriggerMsg)
             .set(handleMsg).equalToWhenPresent(record::getHandleMsg)
             .where(id, isEqualTo(record::getId))

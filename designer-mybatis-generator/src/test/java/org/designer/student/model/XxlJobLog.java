@@ -65,6 +65,10 @@ public class XxlJobLog extends BaseEntity {
     private Byte alarmStatus;
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
+    @ApiModelProperty(value = "")
+    private String uuid;
+
+    @Generated("org.mybatis.generator.api.MyBatisGenerator")
     @ApiModelProperty(value = "调度-日志")
     private String triggerMsg;
 
